@@ -14,7 +14,7 @@ class CalculateViewController: UIViewController {
     @IBOutlet weak var heightSlider: UISlider!
     @IBOutlet weak var weightSlider: UISlider!
     
-    var bmi = "0.0"
+    var calculator = Calculator()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +30,7 @@ class CalculateViewController: UIViewController {
     }
 
     @IBAction func calculatePressed(_ sender: UIButton) {
-        bmi = String(format: "%.2f", weightSlider.value / pow(heightSlider.value, 2))
+        let bmi = calculator.calculateBMI(weightSlider.value, heightSlider.value)
         self.performSegue(withIdentifier: "goToResults", sender: self)
     }
     
@@ -41,7 +41,9 @@ class CalculateViewController: UIViewController {
             let destinationVC = segue.destination as! ResultsViewController
             //as! is called downcasting
             //segue.destination is type UIViewController, but by downcasting, we changed it to a child class, ResultsViewController
-            destinationVC.bmi = bmi
+            destinationVC.bmi = calculator.getBMI()
+            destinationVC.advice = calculator.getAdvice()
+            destinationVC.color = calculator.getColor()
         }
     }
 }
